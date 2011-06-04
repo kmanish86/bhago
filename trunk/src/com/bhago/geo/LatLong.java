@@ -2,20 +2,20 @@ package com.bhago.geo;
 
 public class LatLong {
 
-	public long latitude;
-	public long longitude;
+	public float latitude;
+	public float longitude;
 	
 	
-	public long getLatitude() {
+	public float getLatitude() {
 		return latitude;
 	}
-	public void setLatitude(long latitude) {
+	public void setLatitude(float latitude) {
 		this.latitude = latitude;
 	}
-	public long getLongitude() {
+	public float getLongitude() {
 		return longitude;
 	}
-	public void setLongitude(long longitude) {
+	public void setLongitude(float longitude) {
 		this.longitude = longitude;
 	}
 	

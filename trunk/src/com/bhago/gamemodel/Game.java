@@ -9,11 +9,9 @@ import android.widget.Toast;
 
 public class Game {
 	
-	MyLocation currentLocation;
+	public MyLocation currentLocation;
 	
-	MyLocation [] neighbouringLocations;
-	
-	double waterLevel = 0;
+	public MyLocation [] neighbouringLocations;
 	
 	Activity activity;
 	
@@ -23,10 +21,15 @@ public class Game {
 	}
 	public boolean isGameOver()
 	{
-		if(currentLocation.elevation <= waterLevel)
+		if(currentLocation.elevation <= getWaterLevel())
 			return true;
 		return false;
 		
+	}
+	
+	private double getWaterLevel()
+	{
+		return 0;
 	}
 	
 	public void start()
@@ -55,8 +58,8 @@ public class Game {
 	{
 		PackageManager pm = activity.getPackageManager();
 		boolean hasGps = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
-		double longitude=12.917319;
-		double latitude=77.634585;
+		double latitude=12.917319;
+		double longitude=77.634585;
 		
 		if(hasGps)
 		{

@@ -8,13 +8,13 @@ import android.location.LocationManager;
 import android.widget.Toast;
 
 public class Game {
-	
+
 	public MyLocation currentLocation;
-	
+
 	public MyLocation [] neighbouringLocations;
-	
+
 	Activity activity;
-	
+
 	public Game(Activity activity)
 	{
 		this.activity = activity;
@@ -24,48 +24,82 @@ public class Game {
 		if(currentLocation.elevation <= getWaterLevel())
 			return true;
 		return false;
-		
+
 	}
-	
+
 	private double getWaterLevel()
 	{
 		return 0;
 	}
-	
+
 	public void start()
 	{
 		//1. Get current location from lat long
 		currentLocation = getCurrentLocation();
-		
+
 		//2. Build list of places nearby locations
 		buildNearbyLocations(currentLocation);
-		
-		//3. do we need any state? 
+
+		//3. do we need any state?
 	}
-	
+
 	private void buildNearbyLocations(MyLocation location)
 	{
-		
+
 	}
-	
+
+	public List<GeoCodeLocation> fetchLatLong(String latitude, String longitude) {
+			String url = "https://maps.googleapis.com/maps/api/place/search/json?location=" + latitude + "," + longitude +"&radius=200000&sensor=false&key=AIzaSyDUYvpdxItjQOkvk41_ZMgOhrq5V8z9k-w";
+			URLConnection connection;
+			List<GeoCodeLocation> locations = new ArrayList<GeoCodeLocation>();
+			try
+			{
+				connection = new URL(url).openConnection();
+				InputStream is = connection.getInputStream();
+				BufferedInputStream bis = new BufferedInputStream(is);
+			    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			    int bytesRead;
+			    byte[] buffer = new byte[2048];
+			    String readLine;
+			    while ( (bytesRead = bis.read(buffer,0,2048)) != -1) {
+			          baos.write(buffer,0,bytesRead);
+			    }
+				System.out.println("data=" + baos.toString());
+
+				Gson gson = new GsonBuilder().create();
+				Places places=gson.fromJson(baos.toString(), Places.class);
+				locations = places.getResults();
+				if(locations.size()>1)
+				{
+					locations=locations.subList(1, locations.size()-1);
+				}
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return locations;
+	}
+
 	public void move(MyLocation newLocation)
 	{
 		currentLocation = newLocation;
 		buildNearbyLocations(currentLocation);
 	}
-	
+
 	private MyLocation getCurrentLocation()
 	{
 		PackageManager pm = activity.getPackageManager();
 		boolean hasGps = pm.hasSystemFeature(PackageManager.FEATURE_LOCATION_GPS);
 		double latitude=12.917319;
 		double longitude=77.634585;
-		
+
 		if(hasGps)
 		{
 			try
 			{
-				LocationManager lm = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE); 
+				LocationManager lm = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
 				if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
 				{
 					Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -78,9 +112,9 @@ public class Game {
 				Toast toast =Toast.makeText(activity, "Language Capture failed", Toast.LENGTH_SHORT);
 				toast.show();
 			}
-			
+
 			//Find other ways for finding location: may be google ip based
-			
+
 			//If everything fails use the default location: Koramangla
 		}
 		MyLocation location = new MyLocation(latitude,longitude);

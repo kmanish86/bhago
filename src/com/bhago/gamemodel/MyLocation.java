@@ -2,9 +2,9 @@ package com.bhago.gamemodel;
 
 
 public class MyLocation{
-	public int x;
-	public int y;
-	public double latitude;
+	public int x; //x of screen
+	public int y; //y of screen
+	public double latitude; //ofcourse earth's
 	public double longitude;
 	public double elevation;
 	

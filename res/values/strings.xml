@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, Main!</string>
+    <string name="FirstGameInstruction">Year is 2020. \nGreen house effect has caused water levels to rise. \n\nRun!!\n\nSee how many years you survive.</string>
     <string name="app_name">Bhago</string>
+    <color name="textColor">#ffee00</color>
 </resources>

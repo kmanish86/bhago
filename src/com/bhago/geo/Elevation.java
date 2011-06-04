@@ -4,14 +4,22 @@ import com.bhago.geo.EnumCalculation.ElevationUnits;
 
 public class Elevation {
 
-	long value;
+	Float value;
 	ElevationUnits units;
 	
+	public Elevation() {
+		
+	}
 	
-	public long getValue() {
+	public Elevation(ElevationUnits units) {
+		this.units = units;
+	}
+	
+	
+	public Float getValue() {
 		return value;
 	}
-	public void setValue(long value) {
+	public void setValue(Float value) {
 		this.value = value;
 	}
 	public ElevationUnits getUnits() {

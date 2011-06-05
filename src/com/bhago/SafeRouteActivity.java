@@ -48,16 +48,23 @@ public class SafeRouteActivity extends MapActivity {
 		MapView mapView = (MapView) findViewById(R.id.mapView);
 		List<Overlay> mapOverlays = mapView.getOverlays();
 		Drawable drawable = this.getResources().getDrawable(R.drawable.home_icon);
+		Drawable flagDrawable = this.getResources().getDrawable(R.drawable.flag_icon);
 		MyLocation[] myLocations = game.neighbouringLocations;
+		System.out.println("Render : "+game.currentLocation.name+", with neighbours: "+myLocations.length);
 		for (int i = 0; i <= myLocations.length; i++) {
 			MyLocation loc = null;
+			WaterOverlay itemizedoverlay = null;
 
 			if (myLocations.length == i)
+			{
 				loc = game.currentLocation;
-			else
+				itemizedoverlay = new WaterOverlay(flagDrawable, this, loc);
+			}else{
 				loc = myLocations[i];
+				itemizedoverlay = new WaterOverlay(drawable, this, loc);
+			}
 			
-			WaterOverlay itemizedoverlay = new WaterOverlay(drawable, this, loc);
+			
 			GeoPoint point = new GeoPoint((int) (1000000 * loc.latitude),
 					(int) (1000000 * loc.longitude));
 			OverlayItem overlayitem = new OverlayItem(point, "Moving to",

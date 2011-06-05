@@ -6,13 +6,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.bhago.gamemodel.MyLocation;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
 public class WaterOverlay extends ItemizedOverlay<OverlayItem> {
 
-	private Context mContext;
+	private SafeRouteActivity mActivity;
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
+	MyLocation location = null;
 
 	public WaterOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
@@ -33,18 +35,23 @@ public class WaterOverlay extends ItemizedOverlay<OverlayItem> {
 		return mOverlays.size();
 	}
 
-	public WaterOverlay(Drawable defaultMarker, Context context) {
-		super(defaultMarker);
-		mContext = context;
+	public WaterOverlay(Drawable defaultMarker, SafeRouteActivity activity, MyLocation loc) {
+		super(boundCenterBottom(defaultMarker));
+		mActivity = activity;
+		location = loc;
 	}
 
 	@Override
 	protected boolean onTap(int index) {
 		OverlayItem item = mOverlays.get(index);
-		AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder dialog = new AlertDialog.Builder(mActivity);
 		dialog.setTitle(item.getTitle());
 		dialog.setMessage(item.getSnippet());
 		dialog.show();
+		
+		mActivity.game.move(location);
+		mActivity.renderGame();
+		
 		return true;
 	}
 

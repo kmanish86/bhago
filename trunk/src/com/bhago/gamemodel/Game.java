@@ -1,5 +1,18 @@
 package com.bhago.gamemodel;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -45,7 +58,15 @@ public class Game {
 
 	private void buildNearbyLocations(MyLocation location)
 	{
-
+		 List<GeoCodeLocation> nearbyPlaces = fetchLatLong(""+currentLocation.latitude, ""+currentLocation.longitude);
+		 Iterator<GeoCodeLocation> iter = nearbyPlaces.iterator();
+		 ArrayList <MyLocation> myLocations = new ArrayList<MyLocation>();
+		 while(iter.hasNext())
+		 {
+			 GeoCodeLocation loc = iter.next();
+			 myLocations.add(new MyLocation(loc.name, loc.geometry.location.lat, loc.geometry.location.lng));
+		 }
+		 neighbouringLocations = myLocations.toArray(new MyLocation[myLocations.size()]);
 	}
 
 	public List<GeoCodeLocation> fetchLatLong(String latitude, String longitude) {
